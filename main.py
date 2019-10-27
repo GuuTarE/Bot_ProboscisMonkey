@@ -14,6 +14,10 @@ from linebot.models import (
 )
 
 app = Flask(__name__)
+-----追加-----
+# インスタンス生成
+res = Response()
+---ここまで---
 
 # Herokuの変数からトークンなどを取得
 channel_secret = os.environ['LINE_CHANNEL_SECRET']
@@ -45,17 +49,16 @@ def callback():
         abort(400)
     return 'OK'
 
- #LINEでMessageEvent（普通のメッセージを送信された場合）が起こった場合
+# LINEでMessageEvent（普通のメッセージを送信された場合）が起こった場合
 # reply_messageの第一引数のevent.reply_tokenは、イベントの応答に用いるトークンです。
 # 第二引数には、linebot.modelsに定義されている返信用のTextSendMessageオブジェクトを渡しています。
 @handler.add(MessageEvent, message = TextMessage)
 def handle_message(event):
-
     #入力された内容(event.message.text)に応じて返信する
     line_bot_api.reply_message(
     event.reply_token,
-    TextSendMessage(text = os.environ[Response.getResponse(event.message.text)])
+    TextSendMessage(text = os.environ[res.getResponse(event.message.text)])
     )
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
